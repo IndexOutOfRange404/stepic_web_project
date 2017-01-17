@@ -6,7 +6,7 @@ class Question(models.Model):
     title = models.CharField(max_length=50)
     text = models.TextField()
     added_at = models.DateField()
-    raiting = models.IntegerField()
+    rating = models.IntegerField()
     author = models.ForeignKey(User)
     likes = models.CommaSeparatedIntegerField(max_length=255)
 
@@ -21,7 +21,7 @@ class QuestionManager:
 
     @staticmethod
     def popular():
-        return Question.objects.all().order_by('raiting')
+        return Question.objects.all().order_by('rating')
 
 
 class Answer(models.Model):
