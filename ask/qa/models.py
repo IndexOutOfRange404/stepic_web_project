@@ -7,8 +7,8 @@ class Question(models.Model):
     text = models.TextField()
     added_at = models.DateField()
     rating = models.IntegerField()
-    author = models.ForeignKey(User)
-    likes = models.CommaSeparatedIntegerField(max_length=255)
+    author = models.ForeignKey(User, related_name='question_author')
+    likes = models.ManyToManyField(User)
 
 
 class QuestionManager:
