@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div id="question">
+                <h3 id="question-title">{{ question.title }}</h3>
+                <div id="question-text">{{ question.text }}</div>
+                <ul>
+                    {% for answer in answers %}
+                        <li class="answer">{{ answer.text }}</li>
+                    {% endfor %}
+                </ul>
+        </div>
+    </div>
+{% endblock %}

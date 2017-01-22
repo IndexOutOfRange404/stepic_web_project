@@ -3,13 +3,11 @@ from django.db import models
 
 
 class QuestionManager(models.Manager):
-    @staticmethod
-    def new():
-        return Question.objects.all().order_by('-pk')[:10]
+    def new(self):
+        return self.all().order_by('-pk')
 
-    @staticmethod
-    def popular():
-        return Question.objects.all().order_by('rating')
+    def popular(self):
+        return self.all().order_by('-rating')
 
 
 class Question(models.Model):
@@ -20,6 +18,9 @@ class Question(models.Model):
     author = models.ForeignKey(User, related_name='question_author')
     likes = models.ManyToManyField(User)
     objects = QuestionManager()
+
+    def get_url(self):
+        return "/question/{}".format(self.pk)
 
 
 class Answer(models.Model):
