@@ -1,8 +1,10 @@
 from django.http import Http404
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpRequest
 from models import Question
+from qa.forms import AskForm, AnswerForm
 
 
 def new(request):
@@ -36,15 +38,44 @@ def main(request, questions):
 
 
 def question(request, question_id=None):
-    try:
-        quest = Question.objects.get(pk=question_id)
-    except Question.DoesNotExist:
-        raise Http404()
-    answers = quest.answer_set.all()
+    """
 
-    return render(request, 'question.html', {
-        'question': quest,
-        'answers': answers
+    :type request: HttpRequest
+    """
+    if request.method == 'POST':
+        answer_form = AnswerForm(request.POST)
+        if answer_form.is_valid():
+            answer = answer_form.save()
+            return HttpResponseRedirect(answer.question.get_url())
+    else:
+        try:
+            quest = Question.objects.get(pk=question_id)
+        except Question.DoesNotExist:
+            raise Http404()
+        answers = quest.answer_set.all()
+
+        return render(request, 'question.html', {
+            'question': quest,
+            'answers': answers,
+            'answer_form': AnswerForm(),
+        })
+
+
+def ask(request):
+    """
+
+    :type request: HttpRequest
+    """
+    if request.method == 'POST':
+        ask_form = AskForm(request.POST)
+        if ask_form.is_valid():
+            question = ask_form.save()
+            return HttpResponseRedirect(question.get_url())
+    else:
+        ask_form = AskForm()
+
+    return render(request, 'form.html', {
+        'form': ask_form
     })
 
 

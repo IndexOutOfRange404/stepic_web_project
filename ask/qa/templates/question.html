@@ -5,11 +5,17 @@
             <div id="question">
                 <h3 id="question-title">{{ question.title }}</h3>
                 <div id="question-text">{{ question.text }}</div>
-                <ul>
+                <form action="{{ question.get_url }}" method="POST">
+                    {% csrf_token %}
+                    {{ answer_form.as_p }}
+                    <input type="submit" value="Отправить" />
+                </form>
+                <ul id="answers">
                     {% for answer in answers %}
                         <li class="answer">{{ answer.text }}</li>
                     {% endfor %}
                 </ul>
+            </div>
         </div>
     </div>
 {% endblock %}
