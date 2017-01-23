@@ -46,19 +46,17 @@ def question(request, question_id=None):
         answer_form = AnswerForm(request.POST)
         if answer_form.is_valid():
             answer = answer_form.save()
-            return HttpResponseRedirect(answer.question.get_url())
-    else:
-        try:
-            quest = Question.objects.get(pk=question_id)
-        except Question.DoesNotExist:
-            raise Http404()
-        answers = quest.answer_set.all()
+    try:
+        quest = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404()
+    answers = quest.answer_set.all()
 
-        return render(request, 'question.html', {
-            'question': quest,
-            'answers': answers,
-            'answer_form': AnswerForm(),
-        })
+    return render(request, 'question.html', {
+        'question': quest,
+        'answers': answers,
+        'answer_form': AnswerForm(),
+    })
 
 
 def ask(request):
