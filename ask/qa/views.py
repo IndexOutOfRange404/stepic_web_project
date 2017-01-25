@@ -86,18 +86,23 @@ def ask(request):
 
 
 def signup(request):
+    """
+
+    :type request: HttpRequest
+    """
     if request.method == 'POST':
         user = User.objects.create_user(
             username=request.POST['username'],
             email=request.POST['email'],
             password=request.POST['password'],
         )
-        return HttpResponseRedirect('/')
     else:
         signup_form = SignupForm()
-        return render(request, 'signup.html', {
+        response = render(request, 'signup.html', {
             'signup_form': signup_form
         })
+        response.set_cookie('sessionid', request.COOKIES['sessionid'])
+        return response
 
 
 def login(request):
