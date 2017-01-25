@@ -102,7 +102,6 @@ def signup(request):
         response = render(request, 'signup.html', {
             'signup_form': signup_form
         })
-        response.set_cookie('sessionid', request.COOKIES['sessionid'])
         return response
 
 
