@@ -96,7 +96,7 @@ def signup(request):
             email=request.POST['email'],
             password=request.POST['password'],
         )
-        return HttpResponseRedirect('/')
+        return new(request)
     else:
         signup_form = SignupForm()
         response = render(request, 'signup.html', {
